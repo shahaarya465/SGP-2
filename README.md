@@ -56,6 +56,31 @@ Run all cells sequentially:
 
 ---
 
+## 📦 Pretrained Models
+We provide pretrained models for inference and further experimentation.
+Download them from the [Releases](https://github.com/shahaarya465/SGP-2/releases)
+
+- **generator.pth** → Trained Generator network for producing output samples.  
+- **discriminator.pth** → Trained Discriminator network used during training for adversarial learning.
+
+Usage:
+
+```bash
+import torch
+
+# Recreate your model classes first
+gen = Generator()
+disc = Discriminator()
+
+# Load pretrained weights
+gen.load_state_dict(torch.load("generator.pth", map_location="cpu"))
+disc.load_state_dict(torch.load("discriminator.pth", map_location="cpu"))
+
+gen.eval()
+disc.eval()
+```
+---
+
 ## 📊 Evaluation Metrics
 
 Generated images are compared with ground-truth Sentinel-2 images using:
@@ -64,16 +89,6 @@ Generated images are compared with ground-truth Sentinel-2 images using:
 - **SSIM (Structural Similarity Index)** – Measures structural similarity.
 - **FID (Fréchet Inception Distance)** – Measures distribution similarity.
 - **LPIPS (Learned Perceptual Image Patch Similarity)** – Measures perceptual similarity.
-
----
-
-## 📷 Results
-
-Visualization of Sentinel-1 input → Generated Sentinel-2 output → Ground Truth Sentinel-2.
-
-Metric results reported for different terrains.
-
-*(Add example plots and metric tables here once experiments are completed.)*
 
 ---
 
