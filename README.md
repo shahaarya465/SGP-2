@@ -1,98 +1,110 @@
-# 🌍 Simulation of Future Land Use Patterns Using Deep Learning on Satellite Imagery
+# 🛰️ Deforestation Detection using Satellite Image Translation
 
-This repository contains the implementation of **AIML305 - Project II (SGP-2)**.  
-The project focuses on **predicting and simulating future land use patterns** using **Sentinel-1 (SAR)** and **Sentinel-2 (Optical)** satellite imagery with deep learning models.  
+This repository contains the implementation of **AIML305 - Project II (SGP-2)**. The project is a full-stack web application that uses a deep learning model to translate Sentinel-1 (SAR) radar imagery into Sentinel-2 optical imagery to detect and analyze deforestation over time.
 
 ---
 
-## 📌 Project Overview
-Satellite imagery is a powerful tool for monitoring environmental change, urban growth, agriculture, and deforestation.  
-This project aims to **simulate future land use patterns** by learning transformations from **radar (Sentinel-1)** to **optical (Sentinel-2)** imagery, and evaluating generated results using image similarity metrics.
+## 🌟 Features
 
-Key objectives:
-- Translate **Sentinel-1 radar images → Sentinel-2 optical images**.  
-- Evaluate generated images with **PSNR, SSIM, FID, and LPIPS**.  
-- Provide insights into how land use patterns can evolve over time.  
+- **SAR to Optical Translation**: Utilizes a Generative Adversarial Network (GAN) to convert radar satellite images into clear, optical-style images.
+- **Interactive Web Interface**: A user-friendly frontend built with React to upload "past" and "recent" satellite images.
+- **Deforestation Analysis**: Calculates the change in a vegetation index (NDVI approximation) between two time periods to quantify vegetation loss.
+- **Dynamic Results**: Displays the generated optical images, NDVI values, and a final deforestation status ("Significant," "Moderate," or "No change").
+- **Full-Stack Architecture**: A robust Python backend powered by FastAPI serves the PyTorch model, and a modern frontend built with Vite and React provides the user interface.
+
+---
+
+## 🏛️ Project Architecture
+
+The application is composed of three main components:
+
+1.  **Frontend**: A responsive web dashboard built with **React** and styled with **Tailwind CSS**. It allows users to upload two images, send them to the backend for processing, and displays the returned analysis in a clear, organized format.
+2.  **Backend**: A powerful API built with **FastAPI** (Python). It handles image processing, loads the pretrained PyTorch model, performs the image-to-image translation, calculates vegetation changes, and serves the results to the frontend.
+3.  **Machine Learning Model**: A **Pix2Pix GAN** trained in the `SGP_2.ipynb` notebook. This model is the core of the application, responsible for translating the input radar imagery into optical imagery.
+
+---
+
+## 🚀 How to Run the Full Application
+
+To get the web application running locally, you need to start both the backend server and the frontend development server.
+
+### **1. Clone the Repository**
+
+```bash
+git clone [https://github.com/shahaarya465/SGP-2.git](https://github.com/shahaarya465/SGP-2.git)
+cd SGP-2
+```
+
+### **2. Set Up and Run the Backend**
+
+The backend serves the machine learning model.
+
+```bash
+# Navigate to the backend directory
+cd backend
+
+# Create and activate a Python virtual environment
+python -m venv venv
+# On Windows: venv\Scripts\activate
+# On macOS/Linux: source venv/bin/activate
+
+# Install the required Python libraries
+pip install -r requirements.txt
+
+# IMPORTANT: Download the pretrained 'generator.pth' model from the Releases page
+# and place it inside this 'backend' folder.
+
+# Run the FastAPI server
+uvicorn main:app --reload --port 8000
+```
+Your backend is now running at `http://12.0.0.1:8000`.
+
+### **3. Set Up and Run the Frontend**
+
+Open a **new terminal** for this step.
+
+```bash
+# Navigate to the frontend directory from the root folder
+cd frontend
+
+# Install the required npm packages
+npm install
+
+# Run the React development server
+npm run dev
+```
+Your frontend is now running, typically at `http://localhost:5173`. Open this URL in your browser to use the application.
 
 ---
 
 ## 📂 Dataset
-- **Source**: [Sentinel-1/2 Image Pairs Dataset (Kaggle)](https://www.kaggle.com/datasets/requiemonk/sentinel12-image-pairs-segregated-by-terrain)  
-- Contains paired **Sentinel-1 (SAR)** and **Sentinel-2 (Optical)** images.  
-- Images are categorized by terrain type for structured training and evaluation.  
 
----
-
-## ⚙️ Requirements
-Install dependencies before running the notebook:
-
-```bash
-pip install torch torchvision torchmetrics scikit-learn matplotlib pillow tqdm kagglehub
-```
-
----
-
-## 🚀 How to Run
-
-Clone this repository:
-
-```bash
-git clone https://github.com/your-username/SGP-2.git
-cd SGP-2
-```
-
-Open the notebook:
-
-```bash
-jupyter notebook SGP_2.ipynb
-```
-
-Run all cells sequentially:
-
-- Dataset download
-- Preprocessing and DataLoader setup
-- Model definition and training
-- Evaluation and visualization
+- **Source**: [Sentinel-1/2 Image Pairs Dataset (Kaggle)](https://www.kaggle.com/datasets/requiemonk/sentinel12-image-pairs-segregated-by-terrain)
+- Contains paired **Sentinel-1 (SAR)** and **Sentinel-2 (Optical)** images used to train the GAN model.
 
 ---
 
 ## 📦 Pretrained Models
-We provide pretrained models for inference and further experimentation.
-Download them from the [Releases](https://github.com/shahaarya465/SGP-2/releases)
 
-- **generator.pth** → Trained Generator network for producing output samples.  
-- **discriminator.pth** → Trained Discriminator network used during training for adversarial learning.
+We provide pretrained models for inference. Download them from the [Releases](https://github.com/shahaarya465/SGP-2/releases).
 
-Usage:
+- **`generator.pth`**: The trained Generator network, required for the backend to run.
+- **`discriminator.pth`**: The trained Discriminator network, used during the model's training phase.
 
-```bash
-import torch
-
-# Recreate your model classes first
-gen = Generator()
-disc = Discriminator()
-
-# Load pretrained weights
-gen.load_state_dict(torch.load("generator.pth", map_location="cpu"))
-disc.load_state_dict(torch.load("discriminator.pth", map_location="cpu"))
-
-gen.eval()
-disc.eval()
-```
 ---
 
 ## 📊 Evaluation Metrics
 
-Generated images are compared with ground-truth Sentinel-2 images using:
+The original model's performance was evaluated by comparing generated images with ground-truth Sentinel-2 images using:
 
-- **PSNR (Peak Signal-to-Noise Ratio)** – Measures image clarity.
-- **SSIM (Structural Similarity Index)** – Measures structural similarity.
-- **FID (Fréchet Inception Distance)** – Measures distribution similarity.
-- **LPIPS (Learned Perceptual Image Patch Similarity)** – Measures perceptual similarity.
+-   **PSNR** (Peak Signal-to-Noise Ratio)
+-   **SSIM** (Structural Similarity Index)
+-   **FID** (Fréchet Inception Distance)
+-   **LPIPS** (Learned Perceptual Image Patch Similarity)
 
 ---
 
 ## 👥 Contributors
 
-- Aarya Shah (23AIML064)
-- Vansh Mehta (23AIML074)
+-   Aarya Shah (23AIML064)
+-   Vansh Mehta (23AIML074)
