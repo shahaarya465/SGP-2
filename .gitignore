@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.env
+.env
+*.sqlite3
+*.db
+*.log
+*.pth
+
+# Ignore model weights
+backend/generator.pth
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Node.js / Frontend
+node_modules/
+dist/
+build/
+*.log
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Vite
+.vite/
+
+# Tailwind
+*.css.map
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+*.bak
+*.tmp
+*.swp
+*.swo
+
+# VS Code
+.vscode/
+
+# Others
+*.csv
+!ndvi_dataset.csv
