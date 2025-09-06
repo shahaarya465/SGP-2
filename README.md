@@ -31,7 +31,7 @@ To get the web application running locally, you need to start both the backend s
 ### **1. Clone the Repository**
 
 ```bash
-git clone [https://github.com/shahaarya465/SGP-2.git](https://github.com/shahaarya465/SGP-2.git)
+git clone https://github.com/shahaarya465/SGP-2.git
 cd SGP-2
 ```
 
